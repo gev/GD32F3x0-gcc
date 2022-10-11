@@ -1,8 +1,8 @@
 PORT=/dev/ttyUSB0
-DEVICE=GD32F350
+DEVICE=GD32F330
 
-CFLAGS=-mthumb -mcpu=cortex-m4 -mfloat-abi=soft -fno-builtin -fno-strict-aliasing -fdata-sections -fms-extensions -ffunction-sections -Os -Ilib/inc -D$(DEVICE)
-LDFLAGS=-mthumb -mcpu=cortex-m4 -mfloat-abi=soft -Wl,--gc-sections -flto -specs=nano.specs -T lib/gd32f3x0.ld
+CFLAGS=-mthumb -mcpu=cortex-m4 -mfloat-abi=soft -fno-builtin -fno-strict-aliasing -fdata-sections -fms-extensions -ffunction-sections -Og -Ilib/inc -D$(DEVICE)
+LDFLAGS=-mthumb -mcpu=cortex-m4 -mfloat-abi=soft -Wl,--gc-sections -flto -specs=nano.specs -Tlib/gd32f3x0.ld
 
 CC=arm-none-eabi-gcc
 LD=arm-none-eabi-gcc
@@ -19,7 +19,7 @@ LIBOBJS=$(patsubst lib/src/%.c, lib/%.o, $(LIBS))
 
 app: $(SRCOBJS)
 	$(LD) $(LDFLAGS) $^ -lc -lm lib/driver.a -o output.elf
-	$(OC) -O binary output.elf output.bin
+	$(OC) -O ihex output.elf output.hex
 	@rm -rf *.o *.elf
 
 flash: app

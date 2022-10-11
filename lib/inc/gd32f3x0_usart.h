@@ -1,35 +1,37 @@
 /*!
-    \file  gd32f3x0_usart.h
-    \brief definitions for the USART
-    
+    \file    gd32f3x0_usart.h
+    \brief   definitions for the USART
+
     \version 2017-06-06, V1.0.0, firmware for GD32F3x0
     \version 2019-06-01, V2.0.0, firmware for GD32F3x0
+    \version 2020-09-30, V2.1.0, firmware for GD32F3x0
+    \version 2022-01-06, V2.2.0, firmware for GD32F3x0
 */
 
 /*
-    Copyright (c) 2019, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
-    Redistribution and use in source and binary forms, with or without modification, 
+    Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
 
-    1. Redistributions of source code must retain the above copyright notice, this 
+    1. Redistributions of source code must retain the above copyright notice, this
        list of conditions and the following disclaimer.
-    2. Redistributions in binary form must reproduce the above copyright notice, 
-       this list of conditions and the following disclaimer in the documentation 
+    2. Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
        and/or other materials provided with the distribution.
-    3. Neither the name of the copyright holder nor the names of its contributors 
-       may be used to endorse or promote products derived from this software without 
+    3. Neither the name of the copyright holder nor the names of its contributors
+       may be used to endorse or promote products derived from this software without
        specific prior written permission.
 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
@@ -94,8 +96,6 @@ OF SUCH DAMAGE.
 #define USART_CTL1_TINV               BIT(17)                        /*!< TX pin level inversion */
 #define USART_CTL1_DINV               BIT(18)                        /*!< data bit level inversion */
 #define USART_CTL1_MSBF               BIT(19)                        /*!< most significant bit first */
-#define USART_CTL1_ABDEN              BIT(20)                        /*!< auto baud rate enable */
-#define USART_CTL1_ABDM               BITS(21,22)                    /*!< auto baud rate mode */
 #define USART_CTL1_RTEN               BIT(23)                        /*!< receiver timeout enable */
 #define USART_CTL1_ADDR               BITS(24,31)                    /*!< address of the USART terminal */
 
@@ -133,7 +133,6 @@ OF SUCH DAMAGE.
 #define USART_RT_BL                   BITS(24,31)                    /*!< block length */
 
 /* USARTx_CMD */
-#define USART_CMD_ABDCMD              BIT(0)                         /*!< auto baudrate detection command */
 #define USART_CMD_SBKCMD              BIT(1)                         /*!< send break command */
 #define USART_CMD_MMCMD               BIT(2)                         /*!< mute mode command */
 #define USART_CMD_RXFCMD              BIT(3)                         /*!< receive data flush command */
@@ -153,8 +152,6 @@ OF SUCH DAMAGE.
 #define USART_STAT_CTS                BIT(10)                        /*!< CTS level */
 #define USART_STAT_RTF                BIT(11)                        /*!< receiver timeout flag */
 #define USART_STAT_EBF                BIT(12)                        /*!< end of block flag */
-#define USART_STAT_ABDE               BIT(14)                        /*!< auto baudrate detection error */
-#define USART_STAT_ABDF               BIT(15)                        /*!< auto baudrate detection flag */
 #define USART_STAT_BSY                BIT(16)                        /*!< busy flag */
 #define USART_STAT_AMF                BIT(17)                        /*!< address match flag */
 #define USART_STAT_SBF                BIT(18)                        /*!< send break flag */
@@ -211,7 +208,7 @@ OF SUCH DAMAGE.
 #define USART_RFCS_REG_OFFSET              (0x000000D0U)                   /*!< RFCS register offset */
 
 /* USART flags */
-typedef enum{
+typedef enum {
     /* flags in STAT register */
     USART_FLAG_REA = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 22U),         /*!< receive enable acknowledge flag */
     USART_FLAG_TEA = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 21U),         /*!< transmit enable acknowledge flag */
@@ -220,8 +217,6 @@ typedef enum{
     USART_FLAG_SB = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 18U),          /*!< send break flag */
     USART_FLAG_AM = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 17U),          /*!< ADDR match flag */
     USART_FLAG_BSY = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 16U),         /*!< busy flag */
-    USART_FLAG_ABD = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 15U),         /*!< auto baudrate detection flag */
-    USART_FLAG_ABDE = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 14U),        /*!< auto baudrate detection error */
     USART_FLAG_EB = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 12U),          /*!< end of block flag */
     USART_FLAG_RT = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 11U),          /*!< receiver timeout flag */
     USART_FLAG_CTS = USART_REGIDX_BIT(USART_STAT_REG_OFFSET, 10U),         /*!< CTS level */
@@ -238,11 +233,10 @@ typedef enum{
     /* flags in RFCS register */
     USART_FLAG_RFF = USART_REGIDX_BIT(USART_RFCS_REG_OFFSET, 11U),         /*!< receive FIFO full flag */
     USART_FLAG_RFE = USART_REGIDX_BIT(USART_RFCS_REG_OFFSET, 10U),         /*!< receive FIFO empty flag */
-}usart_flag_enum;
+} usart_flag_enum;
 
 /* USART interrupt flags */
-typedef enum
-{
+typedef enum {
     /* interrupt flags in CTL0 register */
     USART_INT_FLAG_EB = USART_REGIDX_BIT2(USART_CTL0_REG_OFFSET, 27U, USART_STAT_REG_OFFSET, 12U),       /*!< end of block interrupt flag */
     USART_INT_FLAG_RT = USART_REGIDX_BIT2(USART_CTL0_REG_OFFSET, 26U, USART_STAT_REG_OFFSET, 11U),       /*!< receiver timeout interrupt flag */
@@ -263,11 +257,10 @@ typedef enum
     USART_INT_FLAG_ERR_FERR = USART_REGIDX_BIT2(USART_CTL2_REG_OFFSET, 0U, USART_STAT_REG_OFFSET, 1U),   /*!< frame error interrupt flag */
     /* interrupt flags in RFCS register */
     USART_INT_FLAG_RFFINT = USART_REGIDX_BIT2(USART_RFCS_REG_OFFSET, 9U, USART_RFCS_REG_OFFSET, 15U),    /*!< receive FIFO full interrupt flag */
-}usart_interrupt_flag_enum;
+} usart_interrupt_flag_enum;
 
 /* USART interrupt enable or disable */
-typedef enum
-{
+typedef enum {
     /* interrupt in CTL0 register */
     USART_INT_EB = USART_REGIDX_BIT(USART_CTL0_REG_OFFSET, 27U),     /*!< end of block interrupt */
     USART_INT_RT = USART_REGIDX_BIT(USART_CTL0_REG_OFFSET, 26U),     /*!< receiver timeout interrupt */
@@ -285,7 +278,7 @@ typedef enum
     USART_INT_ERR = USART_REGIDX_BIT(USART_CTL2_REG_OFFSET, 0U),     /*!< error interrupt */
     /* interrupt in RFCS register */
     USART_INT_RFF = USART_REGIDX_BIT(USART_RFCS_REG_OFFSET, 9U),     /*!< receive FIFO full interrupt */
-}usart_interrupt_enum;
+} usart_interrupt_enum;
 
 /* USART invert configure */
 typedef enum {
@@ -293,15 +286,15 @@ typedef enum {
     USART_DINV_ENABLE,                                               /*!< data bit level inversion */
     USART_DINV_DISABLE,                                              /*!< data bit level not inversion */
     /* TX pin level inversion */
-    USART_TXPIN_ENABLE,                                              /*!< TX pin level inversion */               
+    USART_TXPIN_ENABLE,                                              /*!< TX pin level inversion */
     USART_TXPIN_DISABLE,                                             /*!< TX pin level not inversion */
     /* RX pin level inversion */
     USART_RXPIN_ENABLE,                                              /*!< RX pin level inversion */
     USART_RXPIN_DISABLE,                                             /*!< RX pin level not inversion */
     /* swap TX/RX pins */
-    USART_SWAP_ENABLE,                                               /*!< swap TX/RX pins */                
+    USART_SWAP_ENABLE,                                               /*!< swap TX/RX pins */
     USART_SWAP_DISABLE,                                              /*!< not swap TX/RX pins */
-}usart_invert_enum;
+} usart_invert_enum;
 
 /* USART receiver configure */
 #define CTL0_REN(regval)              (BIT(2) & ((uint32_t)(regval) << 2))
@@ -370,11 +363,6 @@ typedef enum {
 #define CTL1_MSBF(regval)             (BIT(19) & ((uint32_t)(regval) << 19))
 #define USART_MSBF_LSB                CTL1_MSBF(0)                   /*!< LSB first */
 #define USART_MSBF_MSB                CTL1_MSBF(1)                   /*!< MSB first */
-
-/* USART auto baud rate detection mode bits definitions */
-#define CTL1_ABDM(regval)             (BITS(21,22) & ((uint32_t)(regval) << 21))
-#define USART_ABDM_FTOR               CTL1_ABDM(0)                   /*!< falling edge to rising edge measurement */
-#define USART_ABDM_FTOF               CTL1_ABDM(1)                   /*!< falling edge to falling edge measurement */
 
 /* USART IrDA low-power enable */
 #define CTL2_IRLP(regval)             (BIT(2) & ((uint32_t)(regval) << 2))
@@ -461,14 +449,6 @@ void usart_receiver_timeout_threshold_config(uint32_t usart_periph, uint32_t rti
 void usart_data_transmit(uint32_t usart_periph, uint32_t data);
 /* USART receive data function */
 uint16_t usart_data_receive(uint32_t usart_periph);
-
-/* auto baud rate detection */
-/* enable auto baud rate detection */
-void usart_autobaud_detection_enable(uint32_t usart_periph);
-/* disable auto baud rate detection */
-void usart_autobaud_detection_disable(uint32_t usart_periph);
-/* configure auto baud rate detection mode */
-void usart_autobaud_detection_mode_config(uint32_t usart_periph, uint32_t abdmod);
 
 /* multi-processor communication */
 /* configure the address of the USART in wake up by address match mode */
