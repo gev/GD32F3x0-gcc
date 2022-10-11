@@ -1,8 +1,13 @@
 PORT=/dev/ttyUSB0
 DEVICE=GD32F330
 
-CFLAGS=-mthumb -mcpu=cortex-m4 -mfloat-abi=soft -fno-builtin -fno-strict-aliasing -fdata-sections -fms-extensions -ffunction-sections -Og -Ilib/inc -D$(DEVICE)
-LDFLAGS=-mthumb -mcpu=cortex-m4 -mfloat-abi=soft -Wl,--gc-sections -flto -specs=nano.specs -Tlib/gd32f3x0.ld
+INCS= \
+-Ilib/CMSIS/inc \
+-Ilib/device/gd32f3x0/inc \
+-Ilib/device/gd32f3x0/peripherals/inc
+
+CFLAGS=-mthumb -mcpu=cortex-m4 -mfloat-abi=soft -fno-builtin -fno-strict-aliasing -fdata-sections -fms-extensions -ffunction-sections -Og $(INCS) -D$(DEVICE)
+LDFLAGS=-mthumb -mcpu=cortex-m4 -mfloat-abi=soft -Wl,--gc-sections -flto -specs=nano.specs -Tlib/device/gd32f3x0/gd32f3x0.ld
 
 CC=arm-none-eabi-gcc
 LD=arm-none-eabi-gcc
@@ -12,15 +17,15 @@ FL=stm32loader
 MT=miniterm
 
 SRCS=$(wildcard *.c)
-LIBS=$(wildcard lib/src/*.c)
+LIBS=$(wildcard lib/device/gd32f3x0/src/*.c lib/device/gd32f3x0/peripherals/src/*.c)
 
-SRCOBJS=$(patsubst %.c, %.o, $(SRCS))
-LIBOBJS=$(patsubst lib/src/%.c, lib/%.o, $(LIBS))
+SRCOBJS=$(patsubst %.c, build/%.o, $(SRCS))
+LIBOBJS=$(patsubst %.c, build/%.o, $(LIBS))
 
 app: $(SRCOBJS)
-	$(LD) $(LDFLAGS) $^ -lc -lm lib/driver.a -o output.elf
-	$(OC) -O ihex output.elf output.hex
-	@rm -rf *.o *.elf
+	$(LD) $(LDFLAGS) $^ -lc -lm build/driver.a -o build/output.elf
+	$(OC) -O binary build/output.elf build/output.bin
+	$(OC) -O ihex build/output.elf build/output.hex
 
 flash: app
 	$(FL) -p $(PORT) -s -e -w output.bin
@@ -30,17 +35,11 @@ monitor: flash
 	$(MT) --dtr 1 --rts 0 $(PORT) 115200
 
 driver: $(LIBOBJS)
-	$(AR) rcs lib/driver.a $^
-	@rm -rf lib/*.o
+	$(AR) rcs build/driver.a $^
 
 clean:
-	@rm -rf *.o *.elf *.hex *.bin
+	@rm -rf build
 
-purge:
-	@rm -rf lib/*.o lib/*.a *.o *.elf *.hex *.bin
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-lib/%.o: lib/src/%.c
+build/%.o: %.c
+	@mkdir -p $(shell dirname $@)
 	$(CC) $(CFLAGS) -c $< -o $@
